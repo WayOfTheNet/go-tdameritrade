@@ -3,10 +3,11 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/joncooperworks/go-tdameritrade"
-	"golang.org/x/oauth2"
 	"log"
 	"os"
+
+	"github.com/joncooperworks/go-tdameritrade"
+	"golang.org/x/oauth2"
 )
 
 func main() {
@@ -46,21 +47,20 @@ func main() {
 
 	// more examples here: https://developer.tdameritrade.com/content/place-order-samples
 	resp, err := c.Account.PlaceOrder(ctx, accountID, &tdameritrade.Order{
-		Session: "NORMAL",
-		Duration: "DAY",
-		OrderType: "MARKET",
+		Session:           "NORMAL",
+		Duration:          "DAY",
+		OrderType:         "MARKET",
 		OrderStrategyType: "SINGLE",
 		OrderLegCollection: []*tdameritrade.OrderLegCollection{
 			{
 				Instruction: "Sell",
-				Quantity: 2,
+				Quantity:    2,
 				Instrument: tdameritrade.Instrument{
 					AssetType: "EQUITY",
 					Data: &tdameritrade.Equity{
 						Symbol: "XYZ",
 					},
 				},
-
 			},
 		},
 	})
@@ -69,4 +69,3 @@ func main() {
 	}
 	fmt.Println(resp.StatusCode)
 }
-

@@ -3,10 +3,11 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/joncooperworks/go-tdameritrade"
-	"golang.org/x/oauth2"
 	"log"
 	"os"
+
+	"github.com/joncooperworks/go-tdameritrade"
+	"golang.org/x/oauth2"
 )
 
 func main() {
@@ -46,4 +47,3 @@ func main() {
 	}
 	fmt.Printf("%+v", (*quotes)["SPY"])
 }
-

@@ -117,5 +117,4 @@ func contains(s string, lst []string) bool {
 func ConvertToEpoch(t time.Time) int64 {
 
 	return t.Round(time.Millisecond).UnixNano() / 1e6
-
 }

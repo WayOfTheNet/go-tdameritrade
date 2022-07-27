@@ -70,6 +70,15 @@ type FixedIncome struct {
 	Factor       float64 `json:"factor"`
 }
 
+type OrderActivity struct {
+	ActivityType           string          `json:"activityType"`
+	ActivityId             int64           `json:"activityId"`
+	ExecutionType          string          `json:"executionType"`
+	Quantity               float64         `json:"quantity"`
+	OrderRemainingQuantity float64         `json:"orderRemainingQuantity"`
+	ExecutionLegs          []*ExecutionLeg `json:"executionLegs"`
+}
+
 type SecuritiesAccount struct {
 	Type                    string  `json:"type"`
 	AccountID               string  `json:"accountId"`
@@ -357,7 +366,6 @@ func (s *AccountsService) GetAccounts(ctx context.Context, opts *AccountOptions)
 
 	if err != nil {
 		return nil, nil, err
-
 	}
 	accounts := new(Accounts)
 	resp, err := s.client.Do(ctx, req, accounts)
@@ -436,13 +444,21 @@ func (s *AccountsService) GetOrder(ctx context.Context, accountID, orderID strin
 	return s.client.Do(ctx, req, nil)
 }
 
-func (s *AccountsService) GetOrderByPath(ctx context.Context, accountID string, orderParams *OrderParams) (*Response, error) {
+func (s *AccountsService) GetOrderByPath(ctx context.Context, accountID string, orderParams *OrderParams) (*Orders, *Response, error) {
 	u := fmt.Sprintf("accounts/%s/orders", accountID)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
-	return s.client.Do(ctx, req, nil)
+
+	orders := new(Orders)
+
+	resp, err := s.client.Do(ctx, req, orders)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return orders, resp, nil
 }
 
 func (s *AccountsService) GetOrdersByQuery(ctx context.Context, orderParams *OrderParams) (*Orders, *Response, error) {
@@ -466,7 +482,6 @@ func (s *AccountsService) GetOrdersByQuery(ctx context.Context, orderParams *Ord
 	}
 
 	return ords, resp, nil
-
 }
 
 func (s *AccountsService) CreateSavedOrder(ctx context.Context, accountID string, order *Order) (*Response, error) {

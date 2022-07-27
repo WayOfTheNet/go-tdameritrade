@@ -26,8 +26,32 @@ type WatchlistInstrument struct {
 	AssetType string `json:"assetType"`
 }
 
+// ReplaceWatchlist is a watchlist used to replace an existing watchlist.
+type ReplaceWatchlist struct {
+	Name           string          `json:"name"`
+	WatchlistID    string          `json:"watchlistId"`
+	WatchlistItems []WatchlistItem `json:"watchlistItems"`
+}
+
+// UpdateWatchlist is a watchlist used to update an existing watchlist.
+type UpdateWatchlist struct {
+	Name           string                `json:"name"`
+	WatchlistID    string                `json:"watchlistId"`
+	WatchlistItems []UpdateWatchlistItem `json:"watchlistItems"`
+}
+
+// UpdateWatchlistItem is an item in the user's existing watchlist.
+type UpdateWatchlistItem struct {
+	SequenceID    int                 `json:"sequenceId"`
+	Quantity      float64             `json:"quantity"`
+	AveragePrice  float64             `json:"averagePrice"`
+	Commission    float64             `json:"commission"`
+	PurchasedDate string              `json:"purchasedDate,omitempty"`
+	Instrument    WatchlistInstrument `json:"instrument"`
+}
+
 // StoredWatchlist is an existing watchlist in a user's account.
-type StoredWatchlist []struct {
+type StoredWatchlist struct {
 	Name           string                `json:"name"`
 	WatchlistID    string                `json:"watchlistId"`
 	AccountID      string                `json:"accountId"`
@@ -38,9 +62,9 @@ type StoredWatchlist []struct {
 // StoredWatchlistItem is an item in the user's existing watchlist.
 type StoredWatchlistItem struct {
 	SequenceID    int                       `json:"sequenceId"`
-	Quantity      int                       `json:"quantity"`
-	AveragePrice  int                       `json:"averagePrice"`
-	Commission    int                       `json:"commission"`
+	Quantity      float64                   `json:"quantity"`
+	AveragePrice  float64                   `json:"averagePrice"`
+	Commission    float64                   `json:"commission"`
 	PurchasedDate string                    `json:"purchasedDate"`
 	Instrument    StoredWatchlistInstrument `json:"instrument"`
 	Status        string                    `json:"status"`
